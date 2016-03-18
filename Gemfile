@@ -4,6 +4,9 @@ gem 'devise'
 gem 'haml'
 gem 'ims-lti'
 
+# V8 Google
+gem "therubyracer"
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
 gem 'unicorn'
