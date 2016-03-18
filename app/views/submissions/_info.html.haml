@@ -28,7 +28,7 @@
       =submission.feedback
   -if ["administrator", "grader"].include? session[:role_type]
     %p
-      =link_to("Grade Submission", edit_submission_path(submission))
+      =link_to("Grade Student Submission", edit_submission_path(submission))
   -if ["student"].include? session[:role_type]
     %p
       =link_to("Edit Assignment", edit_submission_path(submission))      

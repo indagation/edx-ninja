@@ -1,5 +1,15 @@
+%h3 You are viewing info for the grader: #{@grader.username}
 -if @grader.students.present?
-  -@grader.students.each do |grader|
-    =render "students/info", :student => student
+  %h4 #{@grader.username} is responsible for gradding the following students:
+  %ul
+    -@grader.students.each do |student|
+      %li=render "students/info", :student => student
 -else
   %p This grader has no students
+-if @grader.course.students.no_grader.count > 0 and session['role_type'] == 'administrator'
+  %h4 The following are students that still need to have a grader assigned
+  %ul
+    -@grader.course.students.no_grader.each do |student|
+      %li
+        =student.username
+        =link_to("Assign Student to Grader", student_assign_grader_path(student, @grader))  

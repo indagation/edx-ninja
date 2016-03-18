@@ -1,3 +1,13 @@
+%h4 You are viewing the info for the student: #{@student.username}
+
 =render :template => "students/show"
 
 =link_to("Change to Grader", student_to_grader_path(@student))
+
+-if @student.grader.present?
+  %p
+    Student Grader: 
+    =@student.grader.username
+    =link_to("Unassign grader", student_unassign_grader_path(@student))
+-else
+  %p Student doesn't currently have a grader
