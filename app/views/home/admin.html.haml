@@ -1,0 +1,21 @@
+%h3 You are an admin for #{@course.context_id}
+
+%h4 Students
+-if @course.students.count > 0
+  %ul
+    -@course.students.each do |student|
+      %li
+        =student.username
+        =link_to("View Student Info", student_path(student))
+-else
+  %p You have no students for this course
+
+%h4 Graders
+-if @course.graders.count > 0
+  %ul
+    -@course.graders.each do |grader|
+      %li
+        =grader.username
+        =link_to("View Grader Info", grader_path(grader))
+-else
+  %p You have no graders for this course

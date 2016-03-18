@@ -1,0 +1,5 @@
+-if @grader.students.present?
+  -@grader.students.each do |grader|
+    =render "students/info", :student => student
+-else
+  %p This grader has no students

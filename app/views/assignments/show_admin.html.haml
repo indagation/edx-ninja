@@ -1,0 +1,5 @@
+-if @assignment.submissions.present?
+  -@assignment.submissions.each do |submission|
+    =render "submissions/info", :submission => submission
+-else
+  %p The course has no submissions
