@@ -32,7 +32,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem "paperclip", "~> 4.3"
-gem 'aws-sdk-rails'
+# gem 'aws-sdk-rails'
 gem 'aws-sdk-v1'
 
 # Use ActiveModel has_secure_password

@@ -16,12 +16,13 @@ class ApplicationController < ActionController::Base
       @user = User.find_by_id @provider.user_id
     end
 
+    reset_session
     if @provider.context_id.present?
       @course = Course.find_or_create_by :context_id => @provider.context_id
       session[:course_id] = @course.id
     end
 
-    if @provider.roles.include? "administrator"
+    if @provider.roles.include? "administrator" or @provider.roles.include? "instructor"
       @administrator = Administrator.find_or_create_by :user => @user, :course => @course
       session[:role_type] = "administrator"
       session[:role_id] = @administrator.id

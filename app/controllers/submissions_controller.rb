@@ -26,6 +26,6 @@ class SubmissionsController < ApplicationController
   private
 
   def submission_params
-    params.require(:submission).permit(:description, :grade, :student_document, :grader_document)
+    params.require(:submission).permit(:description, :grade, :student_document, :grader_document, :feedback)
   end  
 end

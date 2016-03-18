@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20160318182728) do
     t.string   "grader_document_content_type"
     t.integer  "grader_document_file_size"
     t.datetime "grader_document_updated_at"
+    t.text     "feedback"
   end
 
   add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id"
