@@ -1,21 +1,48 @@
-%h3 You are an admin for #{@course.context_id}
+.container{style: "max-width:800px"} 
+  %h3 You are an admin for #{@course.context_id}
 
-%h4 Students
--if @course.students.count > 0
-  %ul
-    -@course.students.each do |student|
-      %li
-        =student.username
-        =link_to("View Student Info", student_path(student))
--else
-  %p You have no students for this course
+  %h4 Students
+  =bootstrap_form_tag :url => students_search_path(@course), :method => "POST" do |f|
+    .row
+      .col-lg-4
+        .form-group
+          %input{type: "text", class: "form-control", placeholder: "Search by Username", name: :username}
+      .col-lg-2=f.submit "Search for students", :class => 'btn btn-primary'  
+  -if @course.students.count > 0
+    .row
+      .col-md-10.col-md-offset-1
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Username
+              %th Student Info
+          %tbody
+            -@course.students.each do |student|
+              %tr
+                %td= student.username
+                %td= link_to("View Student Info", student_path(student))        
+  -else
+    %p You have no students for this course
 
-%h4 Graders
--if @course.graders.count > 0
-  %ul
-    -@course.graders.each do |grader|
-      %li
-        =grader.username
-        =link_to("View Grader Info", grader_path(grader))
--else
-  %p You have no graders for this course
+  %h4 Graders
+  =bootstrap_form_tag :url => graders_search_path(@course), :method => "POST" do |f|
+    .row
+      .col-lg-4
+        .form-group
+          %input{type: "text", class: "form-control", placeholder: "Search by Username", name: :username}
+      .col-lg-2=f.submit "Search for graders", :class => 'btn btn-primary'  
+  -if @course.graders.count > 0
+    .row
+      .col-md-10.col-md-offset-1
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Username
+              %th Student Info
+          %tbody
+            -@course.graders.each do |grader|
+              %tr
+                %td= grader.username
+                %td= link_to("View Student Info", grader_path(grader))        
+  -else
+    %p You have no graders for this course

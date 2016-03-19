@@ -3,7 +3,6 @@ class StudentsController < ApplicationController
 
   def show
     @student = Student.find params[:id]
-    show_template
   end
 
   def to_grader
@@ -19,23 +18,12 @@ class StudentsController < ApplicationController
     @student = Student.find params[:id]
     @grader = Grader.find params[:grader_id]
     @student.update(:grader => @grader)
-    show_template
+    redirect_to student_path(@student)
   end
 
   def unassign_grader
     @student = Student.find params[:id]
     @student.update(:grader_id => nil)
-    show_template
-  end
-
-  private
-  def show_template
-    if session[:role_type] == "student"
-      render "show"
-    elsif session[:role_type] == "grader"
-      render "show_grader"
-    elsif session[:role_type] == "administrator"
-      render "show_admin"
-    end
+    redirect_to student_path(@student)
   end
 end

@@ -25,6 +25,9 @@ Rails.application.routes.draw do
   get 'students/:id/assign/graders/:grader_id/' => 'students#assign_grader', as: :student_assign_grader
   get 'students/:id/unassign/grader' => 'students#unassign_grader', as: :student_unassign_grader
 
+  post 'courses/:id/students/search' => 'courses#students_search', as: :students_search
+  post 'courses/:id/graders/search' => 'courses#graders_search', as: :graders_search
+
   resources :submissions
   resources :students
   resources :graders

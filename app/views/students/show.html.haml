@@ -1,5 +1,30 @@
--if @student.submissions.present?
-  -@student.submissions.each do |submission|
-    =render "submissions/info", :submission => submission
--else
-  %p The student has no submissions
+.container{style: "max-width:800px"}
+  -if session["role_type"] == "administrator"
+    %h3 You are viewing info for the student: #{@student.username}
+  -if @student.submissions.present?
+    .row
+      .col-md-10.col-md-offset-1
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Assignment
+              %th Show Submission
+              %th Current Grade
+          %tbody
+            -@student.submissions.each do |submission|
+              %tr
+                %td= link_to(submission.assignment.resource_link_id, assignment_path(submission.assignment))
+                %td= link_to("Show Submission", submission_path(submission))
+                %td= number_to_percentage(submission.grade*100, precision: 0)
+  -else
+    %p The student has no submissions
+  -if session["role_type"] == "administrator"
+    -if @student.grader.present?
+      %p
+        Student Grader: 
+        =@student.grader.username
+      %p=link_to("Unassign grader", student_unassign_grader_path(@student), :class => "btn btn-danger")
+    -else
+      %p Student doesn't currently have a grader  
+    =link_to("Change Student to Grader", student_to_grader_path(@student), :class => "btn btn-primary")
+  

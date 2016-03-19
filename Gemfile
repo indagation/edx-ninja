@@ -11,7 +11,10 @@ gem "therubyracer"
 gem 'rails', '4.2.5'
 gem 'unicorn'
 
-
+# Bootstrap
+gem 'bootstrap-sass', '3.3.0.0'
+gem 'font-awesome-rails', '4.3.0.0'
+gem "bootstrap_form"
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

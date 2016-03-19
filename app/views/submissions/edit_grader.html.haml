@@ -1,22 +1,18 @@
--if @submission.description.present?
-  %p
-    Student Comments:
-    =@submission.description
--if @submission.student_document.present?
-  %p
-    Student Document:
-    =link_to("Student Document", @submission.student_document.url, target: "_blank")
--else
-  %p No student document uploaded 
-
-=form_for @submission do |f|
-  %p
-    Enter Student Grade:
+.container{style: "max-width:800px"}
+  %h4 Student: #{@submission.student.username}
+  %h4 Assignment submission for assignment: #{@submission.assignment.resource_link_id}
+  -if @submission.description.present?
+    %p
+      Student Comments:
+      =@submission.description
+  -if @submission.student_document.present?
+    %p
+      Student Document:
+      =link_to("Student Document", @submission.student_document.url, target: "_blank")
+  -else
+    %p No student document uploaded 
+  =bootstrap_form_for @submission do |f|
     =f.text_field :grade
-  %p
-    Enter Feedback:
-    =f.text_field :feedback
-  %p
-    Upload Document:
+    =f.text_area :feedback
     =f.file_field :grader_document
-  %p=f.submit
+    =f.submit

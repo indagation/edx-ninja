@@ -9,7 +9,9 @@
 <body>
 <p class="notice"><%= notice %></p>
 <p class="alert"><%= alert %></p>
+<% if session[:role_type].present? and session[:role_type] != "student" %>
+  <div class="container"><a href="<%= root_path %>"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>  Reload</a></div>
+<% end %>
 <%= yield %>
-
 </body>
 </html>

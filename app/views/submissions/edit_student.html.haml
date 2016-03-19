@@ -1,4 +1,5 @@
-=form_for @submission do |f|
-  %p=f.text_field :description
-  %p=f.file_field :student_document  
-  %p=f.submit
+.container{style: "max-width:800px"}
+  =bootstrap_form_for @submission do |f|
+    %p=f.text_field :description
+    %p=f.file_field :student_document  
+    %p=f.submit

@@ -3,12 +3,6 @@ class GradersController < ApplicationController
 
   def show
     @grader = Grader.find params[:id]
-
-    if session[:role_type] == "grader"
-      render "show_grader"
-    elsif session[:role_type] == "administrator"
-      render "show_admin"
-    end
   end
 
   def to_student

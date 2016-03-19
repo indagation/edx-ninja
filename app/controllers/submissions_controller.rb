@@ -1,6 +1,10 @@
 class SubmissionsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  def show
+    @submission = Submission.find(params[:id])
+  end
+  
   def edit
     @submission = Submission.find(params[:id])
     if session[:role_type] == "student"

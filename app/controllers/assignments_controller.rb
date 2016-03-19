@@ -22,7 +22,7 @@ class AssignmentsController < ApplicationController
         unless @submission.present?
           @submission = Submission.create :student => @student, :assignment => @assignment, :lti_params => params
         end
-        render "show_student"
+        render "submissions/show"
       elsif session[:role_type] == "grader"
         @grader ||= Grader.find session[:role_id]
         render "show_grader"

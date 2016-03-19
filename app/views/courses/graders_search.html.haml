@@ -1,0 +1,25 @@
+.container{style: "max-width:800px"} 
+  %h3 You are an admin for #{@course.context_id}
+
+  %h4 Graders
+  =bootstrap_form_tag :url => graders_search_path(@course), :method => "POST" do |f|
+    .row
+      .col-lg-4
+        .form-group
+          %input{type: "text", class: "form-control", placeholder: "Search by Username", name: :username}
+      .col-lg-2=f.submit "Search for graders", :class => 'btn btn-primary'   
+  -if @graders.count > 0
+    .row
+      .col-md-10.col-md-offset-1
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Username
+              %th Student Info
+          %tbody
+            -@graders.each do |grader|
+              %tr
+                %td= grader.username
+                %td= link_to("View Student Info", grader_path(grader))        
+  -else
+    %p We didn't find any graders

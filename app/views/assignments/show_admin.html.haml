@@ -1,5 +1,19 @@
--if @assignment.submissions.present?
-  -@assignment.submissions.each do |submission|
-    =render "submissions/info", :submission => submission
--else
-  %p The course has no submissions
+.container{style: "max-width:800px"}
+  %h3 You are viewing submissions for the assignment: #{@assignment.resource_link_id}
+  -if @assignment.submissions.present?
+    .row
+      .col-md-10.col-md-offset-1
+        %table.table.table-striped
+          %thead
+            %tr
+              %th Assignment
+              %th Show Submission
+              %th Current Grade
+          %tbody
+            -@assignment.submissions.each do |submission|
+              %tr
+                %td= link_to(submission.assignment.resource_link_id, assignment_path(submission.assignment))
+                %td= link_to("Show Submission", submission_path(submission))
+                %td= number_to_percentage(submission.grade*100, precision: 0)
+  -else
+    %p The course has no submissions
