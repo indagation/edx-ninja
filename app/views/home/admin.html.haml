@@ -48,14 +48,14 @@
         %thead
           %tr
             %th Identifier
-            %th Number of Submissions
+            %th Unsubmitted
             %th Ungraded Submissions
             %th Graded Submissions
         %tbody
           -@course.assignments.each do |assignment|
             %tr
               %td= assignment.resource_link_id
-              %td= link_to(assignment.submissions.count, assignment_submissions_path(assignment,:all))        
+              %td= link_to(assignment.submissions.count, assignment_submissions_path(assignment,:unsubmitted))        
               %td= link_to(assignment.submissions.ungraded.count, assignment_submissions_path(assignment,:ungraded))        
               %td= link_to(assignment.submissions.graded.count, assignment_submissions_path(assignment,:graded))  
 -else

@@ -2,5 +2,7 @@
   %h3= @context
 %h4 Ungraded Submissions
 =render "submissions/table", :submissions => @submissions.ungraded
+%h4 Unsubmitted Submissions
+=render "submissions/table", :submissions => @submissions.unsubmitted
 %h4 Graded Submissions
 =render "submissions/table", :submissions => @submissions.graded

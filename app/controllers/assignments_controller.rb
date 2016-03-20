@@ -32,6 +32,8 @@ class AssignmentsController < ApplicationController
         @context = "You are viewing submissions for the assignment: #{@assignment.resource_link_id}"
         @submissions = @assignment.submissions
         render "submissions/index"
+      else
+        check_for_session
       end
     end
   end      

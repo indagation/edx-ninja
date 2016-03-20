@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  def check_for_session
+    if session[:role_type].blank?
+      return render "home/register_now"
+    end
+  end
+
   def set_provider_info
     consumer_key = "client-key"
     consumer_secret = "client-secret"

@@ -9,6 +9,7 @@ class Submission < ActiveRecord::Base
   has_attached_file :grader_document, styles: {thumbnail: "60x60#"}
   validates_attachment :grader_document, content_type: { content_type: "application/pdf" }
 
+  scope :unsubmitted, -> { where.not(:submitted => true) }
   scope :graded, -> { where.not(:graded_at => nil) }
   scope :ungraded, -> { where(:graded_at => nil, :submitted => true) }
   scope :from_assignment, -> (assignment) { joins(:assignment).where(:assignment => assignment) }

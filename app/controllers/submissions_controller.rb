@@ -6,6 +6,9 @@ class SubmissionsController < ApplicationController
     @context = "You are viewing %s submissions for the assignment #{@assignment.resource_link_id}"
 
     case params[:status]
+    when "unsubmitted"
+      @submissions = @assignment.submissions.unsubmitted
+      @context = @context % "unsubmitted"    
     when "graded"
       @submissions = @assignment.submissions.graded
       @context = @context % "the graded"      
@@ -16,7 +19,7 @@ class SubmissionsController < ApplicationController
       @submissions = @assignment.submissions
       @context = @context % "all of the"      
     end
-    render "index"
+    render "search"
   end
 
   def show
