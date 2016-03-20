@@ -1,6 +1,3 @@
-=bootstrap_form_tag :url => students_search_path(course), :method => "POST" do |f|
-  .row
-    .col-lg-4
-      .form-group
-        %input{type: "text", class: "form-control", placeholder: "Search by Username", name: :username, value: username}
-    .col-lg-2=f.submit "Search for students", :class => 'btn btn-primary'  
+=form_tag students_search_path(course), :method => "POST", :class => "form-inline" do |f|
+  %input{type: "text", class: "form-control", placeholder: "Search by Username", name: :username, value: username}
+  =submit_tag "Search for students", :class => 'btn btn-primary'  

@@ -5,11 +5,13 @@
         %thead
           %tr
             %th Username
+            %th Ungraded Submissions
             %th Student Info
         %tbody
           -students.each do |student|
             %tr
               %td= student.username
-              %td= link_to("View Student Info", student_path(student))        
+              %td= student.submissions.ungraded.count
+              %td= link_to("View Student Info", student_path(student), :class=>"btn btn-success")        
 -else
   %p You have no students for this course

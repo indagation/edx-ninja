@@ -4,6 +4,8 @@ class HomeController < ApplicationController
   def index
     if session[:course_id].present?
       @course = Course.find session[:course_id]
+    else
+      check_for_session
     end
 
     if session[:role_type] == "student"

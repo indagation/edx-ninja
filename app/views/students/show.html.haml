@@ -2,23 +2,8 @@
   -if session["role_type"] == "administrator"
     %h3 You are viewing info for the student: #{@student.username}
     %hr
-  -if @student.submissions.present?
-    .row
-      .col-md-10.col-md-offset-1
-        %table.table.table-striped
-          %thead
-            %tr
-              %th Assignment
-              %th Show Submission
-              %th Current Grade
-          %tbody
-            -@student.submissions.each do |submission|
-              %tr
-                %td= link_to(submission.assignment.resource_link_id, assignment_path(submission.assignment))
-                %td= link_to("Show Submission", submission_path(submission))
-                %td= number_to_percentage(submission.grade*100, precision: 0)
-  -else
-    %h4 The student has no submissions
+  %h4 Student Submissions
+  =render "submissions/table", submissions: @student.submissions
   -if session["role_type"] == "administrator"
     %hr
     -if @student.grader.present?
@@ -36,7 +21,7 @@
                 %td= @student.grader.username
                 -if session[:role_type] == "administrator"
                   %td= link_to("View Grader Info", grader_path(@student.grader)) 
-                  %td= link_to("Unassign grader", student_unassign_grader_path(@student))  
+                  %td= link_to("Unassign grader", student_unassign_grader_path(@student), :"data-confirm"=>"Are you sure?", :class=>"btn btn-danger")  
     -else
       %h4 Student doesn't currently have a grader.
       -if @student.course.graders.accepting_students.count.count > 0
@@ -52,7 +37,7 @@
                 -@student.course.graders.accepting_students.each do |grader|
                   %tr
                     %td= link_to(grader.username, grader_path(grader))
-                    %td= link_to("Assign Grader to Student", student_assign_grader_path(@student, grader))
+                    %td= link_to("Assign Grader to Student", student_assign_grader_path(@student, grader), :class=>"btn btn-success")
       -else
         %h5 There aren't any graders accepting students
     %hr        

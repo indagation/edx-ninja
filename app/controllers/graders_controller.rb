@@ -1,6 +1,14 @@
 class GradersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  def admin
+    if session[:course_id].present?
+      @course = Course.find session[:course_id]
+    else
+      check_for_session
+    end
+  end
+
   def course
     @course = Course.find params[:course_id]
     @context = "You are viewing graders who %s."

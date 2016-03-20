@@ -1,6 +1,14 @@
 class StudentsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  def admin
+    if session[:course_id].present?
+      @course = Course.find session[:course_id]
+    else
+      check_for_session
+    end
+  end
+
   def course
     @course = Course.find params[:course_id]
     @context = "You are viewing students who %s."
@@ -29,9 +37,9 @@ class StudentsController < ApplicationController
     if @grader.present?
       @grader.update_attribute(:course_id, @student.course.id)            
       @student.update_attribute(:course_id, nil)
-      @student.submissions.each do |submission|
-        submission.update_attribute(:course_id, nil)
-      end
+      # @student.submissions.each do |submission|
+      #   submission.update_attribute(:assignment_id, nil)
+      # end
     end
     flash[:success] = "Student has been changed to grader."
     redirect_to grader_path(@grader)

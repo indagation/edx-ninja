@@ -1,6 +1,14 @@
 class AssignmentsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  def admin
+    if session[:course_id].present?
+      @course = Course.find session[:course_id]
+    else
+      check_for_session
+    end
+  end
+  
   def show
     if request.method == "POST"
       set_provider_info
@@ -26,7 +34,7 @@ class AssignmentsController < ApplicationController
       elsif session[:role_type] == "grader"
         @grader ||= Grader.find session[:role_id]
         @context = "You are viewing submissions for the assignment: #{@assignment.resource_link_id}"
-        @submissions = @grader.submissions
+        @submissions = @grader.submissions.from_assignment(@assignment)
         render "submissions/index"
       elsif session[:role_type] == "administrator"
         @context = "You are viewing submissions for the assignment: #{@assignment.resource_link_id}"

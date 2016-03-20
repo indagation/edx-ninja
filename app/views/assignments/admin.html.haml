@@ -1,0 +1,20 @@
+%h4 Assignments
+-if @course.assignments.count > 0
+  .row
+    .col-md-10.col-md-offset-1
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Identifier
+            %th Unsubmitted
+            %th Ungraded
+            %th Graded
+        %tbody
+          -@course.assignments.each do |assignment|
+            %tr
+              %td= assignment.resource_link_id
+              %td= link_to(pluralize(assignment.submissions.unsubmitted.count, 'submission'), assignment_submissions_path(assignment,:unsubmitted))        
+              %td= link_to(pluralize(assignment.submissions.ungraded.count, 'submission'), assignment_submissions_path(assignment,:ungraded))        
+              %td= link_to(pluralize(assignment.submissions.graded.count, 'submission'), assignment_submissions_path(assignment,:graded))
+-else
+  %p You have no graders for this course

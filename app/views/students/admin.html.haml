@@ -1,0 +1,18 @@
+%h4 Student Info
+.row
+  .col-md-10.col-md-offset-1
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Students
+          %th No Grader
+          %th Has Grader
+      %tbody
+        %tr
+          %td= link_to(pluralize(@course.students.count, 'student'), course_students_path(@course,:all))
+          %td= link_to(pluralize(@course.students.no_grader.count, 'student'), course_students_path(@course,:no_grader))
+          %td= link_to(pluralize(@course.students.has_grader.count, 'student'), course_students_path(@course,:has_grader))
+%hr
+%h4 Students
+=render "students/search", course: @course, username: params[:username]
+=render "students/table", students: @course.students

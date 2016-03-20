@@ -1,6 +1,14 @@
 class SubmissionsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  def admin
+    if session[:course_id].present?
+      @course = Course.find session[:course_id]
+    else
+      check_for_session
+    end
+  end
+  
   def assignment
     @assignment = Assignment.find(params[:assignment_id])
     @context = "You are viewing %s submissions for the assignment #{@assignment.resource_link_id}"

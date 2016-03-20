@@ -35,6 +35,10 @@ Rails.application.routes.draw do
   get 'students/courses/:course_id/:status' => 'students#course', as: :course_students
   get 'graders/courses/:course_id/:status' => 'graders#course', as: :course_graders
 
+  get 'students/admin' => 'students#admin', as: :student_admin
+  get 'graders/admin' => 'graders#admin', as: :grader_admin
+  get 'assignments/admin' => 'assignments#admin', as: :assignment_admin
+
   resources :submissions
   resources :students
   resources :graders

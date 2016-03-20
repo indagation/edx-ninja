@@ -5,13 +5,15 @@
         %thead
           %tr
             %th Student
+            %th Submitted
+            %th Graded
             %th Show Submission
-            %th Current Grade
         %tbody
           -submissions.each do |submission|
             %tr
               %td= link_to(submission.student.username, student_path(submission.student))
-              %td= link_to("Show Submission", submission_path(submission))
-              %td= number_to_percentage(submission.grade*100, precision: 0)
+              %td= submission.submitted_at
+              %td= submission.graded_at
+              %td= link_to("Show Submission", submission_path(submission), :class=>"btn btn-success")
 -else
   %p There are no submissions

@@ -5,7 +5,7 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     @students = @course.students.joins(:user).where("users.username LIKE ?", "%#{params[:username]}%")
     if @students.present?
-      flash.now[:success] = "We found #{pluralize(@students.count, 'student')} matching your search results."
+      flash.now[:success] = "We found matching results."
     else
       flash.now[:danger] = "No search results were returned."
     end      
@@ -15,7 +15,7 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     @graders = @course.graders.joins(:user).where("users.username LIKE ?", "%#{params[:username]}%")  
     if @graders.present?
-      flash.now[:success] = "We found #{pluralize(@graders.count, 'grader')} matching your search results."
+      flash.now[:success] = "We found matching results."
     else
       flash.now[:danger] = "No search results were returned."
     end
