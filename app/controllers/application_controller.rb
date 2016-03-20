@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     elsif(@user.present? and @grader = Grader.find_by(:user => @user, :course => @course))
       session[:role_type] = "grader"
       session[:role_id] = @grader.id
-    else
+    elsif @user.present?
       @student = Student.find_or_create_by :user => @user, :course => @course
       session[:role_type] = "student"
       session[:role_id] = @student.id

@@ -19,5 +19,10 @@ class CoursesController < ApplicationController
     else
       flash.now[:danger] = "No search results were returned."
     end
-  end    
+  end
+
+  def clear_session
+    reset_session
+    redirect_to root_path
+  end  
 end

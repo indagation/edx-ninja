@@ -15,6 +15,9 @@
       <a href="<%= request.fullpath %>"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>  Refresh</a>
       </div>
   <% end %>
+  <div class="row">
+    <a href="<%= clear_session_path %>">Clear Session</a>
+  </div>
   <% flash.each do |key, value| %>
     <div class="alert alert-<%=key%>"><%= value %></div>
   <% end %>  

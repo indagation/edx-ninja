@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
   post 'courses/:id/students/search' => 'courses#students_search', as: :students_search
   post 'courses/:id/graders/search' => 'courses#graders_search', as: :graders_search
+  get 'courses/sesson/clear' => 'courses#clear_session', as: :clear_session
 
   get 'submissions/assignments/:assignment_id/:status' => 'submissions#assignment', as: :assignment_submissions
   get 'submissions/:id/unsubmit' => 'submissions#unsubmit', as: :unsubmit_submission
