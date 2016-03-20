@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     end
 
     if @provider.user_id.present?
-      @user = User.find_by_id @provider.user_id
+      @user = User.find_by_identifier @provider.user_id
     end
 
     reset_session
