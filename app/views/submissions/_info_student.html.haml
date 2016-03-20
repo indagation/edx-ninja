@@ -1,0 +1,13 @@
+%h4 Student Info
+%p
+  Username:
+  =link_to(@submission.student.username, student_path(@submission.student))
+-if @submission.description.present?
+  %p
+    Student Comments:
+    =@submission.description
+-if @submission.student_document.present?
+  %p
+    =link_to("View Student Document", @submission.student_document.url, target: "_blank", class: "btn btn-success")
+-else
+  %p No student document uploaded

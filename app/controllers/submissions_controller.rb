@@ -1,35 +1,52 @@
 class SubmissionsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
+  def assignment
+    @assignment = Assignment.find(params[:assignment_id])
+    @context = "You are viewing %s submissions for the assignment #{@assignment.resource_link_id}"
+
+    case params[:status]
+    when "graded"
+      @submissions = @assignment.submissions.graded
+      @context = @context % "the graded"      
+    when "ungraded"
+      @submissions = @assignment.submissions.ungraded
+      @context = @context % "the ungraded"      
+    else
+      @submissions = @assignment.submissions
+      @context = @context % "all of the"      
+    end
+    render "index"
+  end
+
   def show
     @submission = Submission.find(params[:id])
+  end
+
+  def unsubmit
+    @submission = Submission.find(params[:id])
+    @submission.update(:submitted => false, :submitted_at => nil)
+    flash.now[:success] = "Submission unsubmitted"
+    render "show"
   end
   
   def edit
     @submission = Submission.find(params[:id])
-    if session[:role_type] == "student"
-      render "edit_student"
-    elsif session[:role_type] == "grader" or session[:role_type] == "administrator"
-      render "edit_grader"
-    end
   end
 
   def update
     @submission = Submission.find(params[:id])
     if @submission.update_attributes(submission_params)
-      consumer_key = "client-key"
-      consumer_secret = "client-secret"
-      @provider = IMS::LTI::ToolProvider.new(consumer_key, consumer_secret, @submission.lti_params)
-      response = @provider.post_replace_result!(@submission.grade)
-      flash[:notice] = "Assignment updated"
+      flash[:success] = "Assignment updated"
+      redirect_to submission_path(@submission)
     else
-      @message = "Submssion issue"
+      flash.now[:danger] = @submission.errors.full_messages[0]
+      render "edit"
     end
-    redirect_to assignment_path(@submission.assignment)
   end
-  private
 
+  private
   def submission_params
-    params.require(:submission).permit(:description, :grade, :student_document, :grader_document, :feedback)
+    params.require(:submission).permit(:description, :grade, :student_document, :grader_document, :feedback, :mark_submitted, :grade_by_role_id, :grade_by_role_type, :mark_graded)
   end  
 end

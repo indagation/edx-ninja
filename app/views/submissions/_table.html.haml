@@ -1,0 +1,17 @@
+-if submissions.present?
+  .row
+    .col-md-10.col-md-offset-1
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Student
+            %th Show Submission
+            %th Current Grade
+        %tbody
+          -submissions.each do |submission|
+            %tr
+              %td= link_to(submission.student.username, student_path(submission.student))
+              %td= link_to("Show Submission", submission_path(submission))
+              %td= number_to_percentage(submission.grade*100, precision: 0)
+-else
+  %p There are no submissions

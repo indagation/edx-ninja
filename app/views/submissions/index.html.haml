@@ -1,0 +1,6 @@
+-if @context.present?
+  %h3= @context
+%h4 Ungraded Submissions
+=render "submissions/table", :submissions => @submissions.ungraded
+%h4 Graded Submissions
+=render "submissions/table", :submissions => @submissions.graded

@@ -1,0 +1,5 @@
+-if @context.present?
+  %h3= @context
+-else
+  %h3 Graders 
+=render "graders/table", graders: @graders

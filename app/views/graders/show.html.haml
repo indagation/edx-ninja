@@ -1,34 +1,40 @@
-.container{style: "max-width:800px"}
+-if @grader.course.present?
   %h3 You are viewing info for the grader: #{@grader.username}
+  %hr
   -if @grader.students.present?
     %h4 #{@grader.username} is responsible for grading the following students:
-    .row
-      .col-md-10.col-md-offset-1
-        %table.table.table-striped
-          %thead
-            %tr
-              %th Username
-              %th Student Info
-          %tbody
-            -@grader.students.each do |student|
-              %tr
-                %td= student.username
-                %td= link_to("View Student Info", student_path(student))
+    =render "students/table", students: @grader.students
   -else
-    %p This grader has no students
-  -if @grader.course.students.no_grader.count > 0 and session['role_type'] == 'administrator'
-    %h4 The following are students that still need to have a grader assigned
-    .row
-      .col-md-10.col-md-offset-1
-        %table.table.table-striped
-          %thead
-            %tr
-              %th Username
-              %th Assign Student
-          %tbody
-            -@grader.course.students.no_grader.each do |student|
-              %tr
-                %td= student.username
-                %td= link_to("Assign Student to Grader", student_assign_grader_path(student, @grader))
+    %h4 The grader doesn't have any students assigned
+  -if session['role_type'] == 'administrator'
+    -if @grader.max_students > @grader.students.count
+      %hr
+      %h4 This grader is currently capable of accepting students
+      -if @grader.course.students.no_grader.count > 0
+        %h5 The following are students that still need to have a grader assigned
+        .row
+          .col-md-10.col-md-offset-1
+            %table.table.table-striped
+              %thead
+                %tr
+                  %th Username
+                  %th Assign Student
+              %tbody
+                -@grader.course.students.no_grader.each do |student|
+                  %tr
+                    %td= student.username
+                    %td= link_to("Assign Student to Grader", student_assign_grader_path(student, @grader))
+      %hr
+    -else
+      %hr    
+      %h4 The grader has reached his or her maximum number of students. Increase the maximum number of students to assign more students.
+    =bootstrap_form_for @grader do |f|
+      = f.text_field :max_students
+      = f.submit "Update Grader", :class => 'btn btn-primary'
+    %hr
+    %p=link_to("Change to Student", grader_to_student_path(@grader), :class => 'btn btn-warning', :"data-confirm"=>"Are you sure?")
 
-    %p=link_to("Change to Student", grader_to_student_path(@grader), :class => 'btn btn-primary')          
+-else
+  %h3 #{@grader.username} is no longer a student in this course
+  -if Student.find_by :user => @grader.user
+    %h4 It looks like #{@grader.username} is a student now, #{link_to("View Student", Student.find_by(:user => @grader.user))}           

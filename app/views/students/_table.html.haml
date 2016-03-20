@@ -1,0 +1,15 @@
+-if students.count > 0
+  .row
+    .col-md-10.col-md-offset-1
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Username
+            %th Student Info
+        %tbody
+          -students.each do |student|
+            %tr
+              %td= student.username
+              %td= link_to("View Student Info", student_path(student))        
+-else
+  %p You have no students for this course

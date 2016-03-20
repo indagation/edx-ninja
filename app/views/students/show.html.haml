@@ -1,6 +1,7 @@
-.container{style: "max-width:800px"}
+-if @student.course.present?
   -if session["role_type"] == "administrator"
     %h3 You are viewing info for the student: #{@student.username}
+    %hr
   -if @student.submissions.present?
     .row
       .col-md-10.col-md-offset-1
@@ -17,14 +18,46 @@
                 %td= link_to("Show Submission", submission_path(submission))
                 %td= number_to_percentage(submission.grade*100, precision: 0)
   -else
-    %p The student has no submissions
+    %h4 The student has no submissions
   -if session["role_type"] == "administrator"
+    %hr
     -if @student.grader.present?
-      %p
-        Student Grader: 
-        =@student.grader.username
-      %p=link_to("Unassign grader", student_unassign_grader_path(@student), :class => "btn btn-danger")
+      .row
+        .col-md-10.col-md-offset-1
+          %table.table.table-striped
+            %thead
+              %tr
+                %th Student Grader
+                -if session[:role_type] == "administrator"
+                  %th View Grader                
+                  %th Unassign Grader
+            %tbody
+              %tr
+                %td= @student.grader.username
+                -if session[:role_type] == "administrator"
+                  %td= link_to("View Grader Info", grader_path(@student.grader)) 
+                  %td= link_to("Unassign grader", student_unassign_grader_path(@student))  
     -else
-      %p Student doesn't currently have a grader  
-    =link_to("Change Student to Grader", student_to_grader_path(@student), :class => "btn btn-primary")
-  
+      %h4 Student doesn't currently have a grader.
+      -if @student.course.graders.accepting_students.count.count > 0
+        %h5 The following graders are currently accepting students.      
+        .row
+          .col-md-10.col-md-offset-1
+            %table.table.table-striped
+              %thead
+                %tr
+                  %th Username
+                  %th Assign Grader
+              %tbody
+                -@student.course.graders.accepting_students.each do |grader|
+                  %tr
+                    %td= link_to(grader.username, grader_path(grader))
+                    %td= link_to("Assign Grader to Student", student_assign_grader_path(@student, grader))
+      -else
+        %h5 There aren't any graders accepting students
+    %hr        
+    =link_to("Change Student to Grader", student_to_grader_path(@student), :class => "btn btn-primary", :"data-confirm"=>"Are you sure?")
+-else
+  %h3 #{@student.username} is no longer a student in this course
+  -if Grader.find_by :user => @student.user
+    %h4 It looks like #{@student.username} is s grader now, #{link_to("View Grader", Grader.find_by(:user => @student.user))}

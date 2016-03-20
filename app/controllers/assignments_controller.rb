@@ -8,7 +8,7 @@ class AssignmentsController < ApplicationController
         @resource_link_id = @provider.resource_link_id.split('-')[1]
 
         if @resource_link_id.present? and @course.present?
-          @assignment = Assignment.find_or_create_by :resource_link_id => @resource_link_id 
+          @assignment = Assignment.find_or_create_by :resource_link_id => @resource_link_id, :course => @course
         end
       end
     elsif params[:id].present?
@@ -25,9 +25,13 @@ class AssignmentsController < ApplicationController
         render "submissions/show"
       elsif session[:role_type] == "grader"
         @grader ||= Grader.find session[:role_id]
-        render "show_grader"
+        @context = "You are viewing submissions for the assignment: #{@assignment.resource_link_id}"
+        @submissions = @grader.submissions
+        render "submissions/index"
       elsif session[:role_type] == "administrator"
-        render "show_admin"
+        @context = "You are viewing submissions for the assignment: #{@assignment.resource_link_id}"
+        @submissions = @assignment.submissions
+        render "submissions/index"
       end
     end
   end      

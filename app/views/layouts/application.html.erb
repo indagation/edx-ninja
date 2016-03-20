@@ -7,11 +7,18 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
-<% if session[:role_type].present? and session[:role_type] != "student" %>
-  <div class="container"><a href="<%= root_path %>"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>  Reload</a></div>
-<% end %>
-<%= yield %>
+<div class="container" style="max-width:800px">
+  <% if session[:role_type].present? and session[:role_type] != "student" %>
+    <div class="row">
+      <a href="<%= root_path %>"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>  Home</a>
+      |
+      <a href="<%= request.fullpath %>"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>  Refresh</a>
+      </div>
+  <% end %>
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%=key%>"><%= value %></div>
+  <% end %>  
+  <%= yield %>
+</div>
 </body>
 </html>

@@ -1,48 +1,62 @@
-.container{style: "max-width:800px"} 
-  %h3 You are an admin for #{@course.context_id}
-
-  %h4 Students
-  =bootstrap_form_tag :url => students_search_path(@course), :method => "POST" do |f|
-    .row
-      .col-lg-4
-        .form-group
-          %input{type: "text", class: "form-control", placeholder: "Search by Username", name: :username}
-      .col-lg-2=f.submit "Search for students", :class => 'btn btn-primary'  
-  -if @course.students.count > 0
-    .row
-      .col-md-10.col-md-offset-1
-        %table.table.table-striped
-          %thead
+%h3 You are an admin for #{@course.context_id}
+%hr
+%h4 Student Info
+.row
+  .col-md-10.col-md-offset-1
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Students
+          %th No Grader
+          %th Has Grader
+      %tbody
+        %tr
+          %td= link_to(@course.students.count, course_students_path(@course,:all))
+          %td= link_to(@course.students.no_grader.count, course_students_path(@course,:no_grader))
+          %td= link_to(@course.students.has_grader.count, course_students_path(@course,:has_grader))
+%h4 Students
+=render "students/search", course: @course, username: params[:username]
+=render "students/table", students: @course.students
+%hr          
+%h4 Grader Info
+.row
+  .col-md-10.col-md-offset-1
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Graders
+          %th Accepting Students
+          %th Has Students
+          %th No Students
+          %th Ungraded Assignments
+      %tbody
+        %tr
+          %td= link_to(@course.graders.count, course_graders_path(@course,:all))
+          %td= link_to(@course.graders.accepting_students.count.count, course_graders_path(@course,:accepting_students))
+          %td= link_to(@course.graders.with_students.count, course_graders_path(@course,:with_students))
+          %td= link_to(@course.graders.without_students.count, course_graders_path(@course,:without_students))
+          %td= link_to(@course.graders.with_ungraded_assignments.count, course_graders_path(@course,:with_ungraded_assignments))
+%h4 Graders
+=render "graders/search", course: @course, username: params[:username]
+=render "graders/table", graders: @course.graders
+%hr            
+%h4 Assignments
+-if @course.assignments.count > 0
+  .row
+    .col-md-10.col-md-offset-1
+      %table.table.table-striped
+        %thead
+          %tr
+            %th Identifier
+            %th Number of Submissions
+            %th Ungraded Submissions
+            %th Graded Submissions
+        %tbody
+          -@course.assignments.each do |assignment|
             %tr
-              %th Username
-              %th Student Info
-          %tbody
-            -@course.students.each do |student|
-              %tr
-                %td= student.username
-                %td= link_to("View Student Info", student_path(student))        
-  -else
-    %p You have no students for this course
-
-  %h4 Graders
-  =bootstrap_form_tag :url => graders_search_path(@course), :method => "POST" do |f|
-    .row
-      .col-lg-4
-        .form-group
-          %input{type: "text", class: "form-control", placeholder: "Search by Username", name: :username}
-      .col-lg-2=f.submit "Search for graders", :class => 'btn btn-primary'  
-  -if @course.graders.count > 0
-    .row
-      .col-md-10.col-md-offset-1
-        %table.table.table-striped
-          %thead
-            %tr
-              %th Username
-              %th Student Info
-          %tbody
-            -@course.graders.each do |grader|
-              %tr
-                %td= grader.username
-                %td= link_to("View Student Info", grader_path(grader))        
-  -else
-    %p You have no graders for this course
+              %td= assignment.resource_link_id
+              %td= link_to(assignment.submissions.count, assignment_submissions_path(assignment,:all))        
+              %td= link_to(assignment.submissions.ungraded.count, assignment_submissions_path(assignment,:ungraded))        
+              %td= link_to(assignment.submissions.graded.count, assignment_submissions_path(assignment,:graded))  
+-else
+  %p You have no graders for this course

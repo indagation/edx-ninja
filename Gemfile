@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'devise'
 gem 'haml'
 gem 'ims-lti'
+gem 'activeresource', require: 'active_resource'
 
 # V8 Google
 gem "therubyracer"
