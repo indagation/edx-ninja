@@ -1,6 +1,7 @@
 -if @student.course.present?
   -if session["role_type"] == "administrator"
     %h3 You are viewing info for the student: #{@student.username}
+    %h4 The student's email address is: #{@student.email}
     %hr
   %h4 Student Submissions
   =render "submissions/table", submissions: @student.submissions
@@ -20,7 +21,7 @@
               %tr
                 %td= @student.grader.username
                 -if session[:role_type] == "administrator"
-                  %td= link_to("View Grader Info", grader_path(@student.grader)) 
+                  %td= link_to("View Grader Info", grader_path(@student.grader), :class=>"btn btn-warning") 
                   %td= link_to("Unassign grader", student_unassign_grader_path(@student), :"data-confirm"=>"Are you sure?", :class=>"btn btn-danger")  
     -else
       %h4 Student doesn't currently have a grader.

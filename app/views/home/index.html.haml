@@ -1,1 +1,7 @@
 %h3 Welcome to EdX-Ninja.
+%p 
+  You are registered with the course: 
+  %b= Course.find(session[:course_id]).context_id
+%p 
+  Your current role is: 
+  %b= session[:role_type]

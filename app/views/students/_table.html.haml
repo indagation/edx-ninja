@@ -5,12 +5,14 @@
         %thead
           %tr
             %th Username
+            %th Email
             %th Ungraded Submissions
             %th Student Info
         %tbody
           -students.each do |student|
             %tr
               %td= student.username
+              %td= student.email
               %td= student.submissions.ungraded.count
               %td= link_to("View Student Info", student_path(student), :class=>"btn btn-success")        
 -else

@@ -1,5 +1,7 @@
 -if @grader.course.present?
   %h3 You are viewing info for the grader: #{@grader.username}
+  %h4 The grader's email address is: #{@grader.email}
+
   %hr
   -if @grader.students.present?
     %h4 #{@grader.username} is responsible for grading the following students:
@@ -23,7 +25,7 @@
                 -@grader.course.students.no_grader.each do |student|
                   %tr
                     %td= student.username
-                    %td= link_to("Assign Student to Grader", student_assign_grader_path(student, @grader))
+                    %td= link_to("Assign Student to Grader", student_assign_grader_path(student, @grader), class: "btn btn-danger")
       %hr
     -else
       %hr    

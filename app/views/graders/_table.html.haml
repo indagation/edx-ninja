@@ -18,6 +18,6 @@
               %td= pluralize(grader.max_students, 'student')
               %td= pluralize(grader.submissions.ungraded.count, 'submission')
               %td= pluralize(grader.graded_submissions.count, 'submission')
-              %td= link_to("View Grader Info", grader_path(grader))        
+              %td= link_to("View Grader Info", grader_path(grader), :class=>"btn btn-danger")        
 -else
   %p There are no graders

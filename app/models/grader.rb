@@ -4,7 +4,7 @@ class Grader < ActiveRecord::Base
   has_many :students
   has_many :submissions, through: :students
   has_many :graded_submissions, :foreign_key => :graded_by_id, :class_name => "Submission"
-  delegate :username, to: :user, allow_nil: true
+  delegate :username, :email, to: :user, allow_nil: true
 
   scope :with_students, -> { includes(:students).where.not(students: { id: nil }) }  
   scope :without_students, -> { includes(:students).where(students: { id: nil }) }  

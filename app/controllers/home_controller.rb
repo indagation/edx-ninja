@@ -12,8 +12,6 @@ class HomeController < ApplicationController
       redirect_to student_path(session[:role_id])
     elsif session[:role_type] == "grader"
       redirect_to grader_path(session[:role_id])
-    elsif session[:role_type] == "administrator"
-      render "admin"
     end
   end
 end
