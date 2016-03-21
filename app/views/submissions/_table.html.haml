@@ -6,6 +6,7 @@
           %tr
             %th Student
             %th Submitted
+            %th Student Document
             %th Graded
             %th Show Submission
         %tbody
@@ -13,6 +14,7 @@
             %tr
               %td= link_to(submission.student.username, student_path(submission.student))
               %td= submission.submitted_at_string
+              %td= submission.student_document_button.html_safe             
               %td= submission.graded_at_string
               %td= link_to("Show Submission", submission_path(submission), :class=>"btn btn-success")
 -else

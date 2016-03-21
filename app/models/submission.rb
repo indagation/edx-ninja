@@ -73,5 +73,13 @@ class Submission < ActiveRecord::Base
     else
       "Not Submitted"
     end
-  end  
+  end
+
+  def student_document_button
+    if student_document.present?
+      "<a href='#{student_document.url}' target='_blank' class='btn btn-primary'>Student Document</a>"
+    else
+      "No Document Provided"
+    end
+  end
 end
