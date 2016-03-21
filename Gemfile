@@ -4,6 +4,7 @@ gem 'devise'
 gem 'haml'
 gem 'ims-lti'
 gem 'activeresource', require: 'active_resource'
+gem 'rubyzip'
 
 # V8 Google
 gem "therubyracer"
