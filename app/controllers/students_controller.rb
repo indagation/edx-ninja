@@ -20,6 +20,9 @@ class StudentsController < ApplicationController
     when "no_grader"
       @students = @course.students.no_grader
       @context = @context % "have not been assigned to a grader"
+    when "with_ungraded_assignments"
+      @students = @course.students.with_ungraded_assignments
+      @context = @context % "have not assignments that need to be graded"
     else
       @students = @course.students
       @context = "You are viewing all students in the course."

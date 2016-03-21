@@ -50,4 +50,20 @@ class Submission < ActiveRecord::Base
       "admin"
     end
   end
+
+  def graded_at_string
+    if graded_at.present?
+      graded_at.strftime("%m/%d/%y %H:%M %Z")
+    else
+      "Not Graded"
+    end
+  end
+
+  def submitted_at_string
+    if submitted_at.present?
+      submitted_at.strftime("%m/%d/%y %H:%M %Z")
+    else
+      "Not Submitted"
+    end
+  end  
 end
