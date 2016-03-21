@@ -7,5 +7,5 @@ class Student < ActiveRecord::Base
 
   scope :no_grader, -> { where(:grader_id => nil) }
   scope :has_grader, -> { where.not(:grader_id => nil) }
-  scope :with_ungraded_assignments, -> { joins(:submissions).where(submissions: { graded_at: nil, submitted: true }) }    
+  scope :with_ungraded_assignments, -> { joins(:submissions).where(submissions: { graded_at: nil, submitted: true }) }   
 end

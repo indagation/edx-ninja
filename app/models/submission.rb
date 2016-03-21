@@ -6,6 +6,14 @@ class Submission < ActiveRecord::Base
   has_attached_file :student_document, styles: {thumbnail: "60x60#"}
   validates_attachment :student_document, content_type: { content_type: "application/pdf" }
 
+  before_save :identify_student_document
+
+  def identify_student_document
+    if student_document_file_name_changed?
+      self.student_document.instance_write(:file_name, "#{self.student.username}-#{student_document_file_name}")
+    end
+  end
+
   has_attached_file :grader_document, styles: {thumbnail: "60x60#"}
   validates_attachment :grader_document, content_type: { content_type: "application/pdf" }
 

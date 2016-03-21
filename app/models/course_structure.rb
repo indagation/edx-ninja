@@ -11,7 +11,6 @@ class CourseStructure < ActiveResource::Base
       require 'net/http'
       require 'json'
       domain = URI.parse(ex.response['Location']).host
-      p "Fuckers" + ex.response['Location']
       url = ex.response['Location']
       uri = URI(url)
       response = Net::HTTP.get(uri)
