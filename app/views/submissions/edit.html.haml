@@ -1,10 +1,11 @@
 =render "submissions/info_student"
--if session[:role_type] == "student"
+-if session[:role_type] == "student" or true
   =bootstrap_form_for @submission do |f|
     =f.text_field :description
     =f.file_field :student_document
     =f.check_box :mark_submitted
     =f.submit "Submit Assignment", class: "btn btn-primary"
+
 -elsif @submission.submitted
   =bootstrap_form_for @submission do |f|
     =f.text_field :grade

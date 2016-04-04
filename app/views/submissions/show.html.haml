@@ -5,7 +5,7 @@
   -if @submission.submitted_at.present?
     %hr
     %h4 Your assignment has been submitted.
-  -else
+  -if true
     %hr
     %p= link_to("View Assignment", edit_submission_path(@submission), :class => 'btn btn-primary')
   -if @submission.graded_at.present?

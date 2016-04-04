@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
 
     @provider = IMS::LTI::ToolProvider.new(consumer_key, consumer_secret, params)
     unless @provider.valid_request?(request)
-      error
+      
     end
 
     if @provider.user_id.present?
