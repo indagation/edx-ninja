@@ -1,0 +1,6 @@
+{
+  "name": "edxninja",
+  "dependencies": {
+    "edx-pattern-library": "0.12.4"
+  }
+}

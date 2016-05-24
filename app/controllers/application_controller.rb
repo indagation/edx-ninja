@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
 
     @provider = IMS::LTI::ToolProvider.new(consumer_key, consumer_secret, params)
     unless @provider.valid_request?(request)
-      
+      error
     end
 
     if @provider.user_id.present?
@@ -32,10 +32,6 @@ class ApplicationController < ActionController::Base
       @administrator = Administrator.find_or_create_by :user => @user, :course => @course
       session[:role_type] = "administrator"
       session[:role_id] = @administrator.id
-    elsif @provider.roles.include? "staff"
-      @staff = Staff.find_or_create_by :user => @user, :course => @course
-      session[:role_type] = "staff"
-      session[:role_id] = @staff.id      
     elsif @provider.roles.include? "instructor"  
       session[:role_type] = "instructor"    
     elsif(@user.present? and @grader = Grader.find_by(:user => @user, :course => @course))

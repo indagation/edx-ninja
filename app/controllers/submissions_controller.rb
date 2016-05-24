@@ -11,30 +11,52 @@ class SubmissionsController < ApplicationController
   
   def assignment
     @assignment = Assignment.find(params[:assignment_id])
-    @context = "You are viewing %s submissions for the assignment #{@assignment.resource_link_id}"
+    @context = "You are viewing %s submissions for the assignment #{@assignment.description}"
+
+    if session[:role_type] == "grader"
+      @grader ||= Grader.find session[:role_id]
+      @submissions = @grader.submissions.from_assignment(@assignment)
+    elsif session[:role_type] == "administrator"
+      @submissions = @assignment.submissions
+    end
 
     case params[:status]
     when "unsubmitted"
-      @submissions = @assignment.submissions.unsubmitted
+      @submissions = @submissions.unsubmitted
       @context = @context % "unsubmitted"    
     when "graded"
-      @submissions = @assignment.submissions.graded
+      @submissions = @submissions.graded
       @context = @context % "the graded"      
     when "ungraded"
-      @submissions = @assignment.submissions.ungraded
+      @submissions = @submissions.ungraded
       @context = @context % "the ungraded"      
     else
-      @submissions = @assignment.submissions
+      @submissions = @submissions
       @context = @context % "all of the"      
     end
     respond_to do |format|
       format.zip { prepare_zip_file }
-      format.html {render "search"}
+      format.html { render "search" }
     end
   end
 
   def show
     @submission = Submission.find(params[:id])
+    @assignment = @submission.assignment
+    if session[:role_type] == "grader"
+      @grader = Grader.find_by :id => session[:role_id]
+      @submissions = @grader.submissions.from_assignment(@assignment)
+      @students = @grader.students
+    elsif session[:role_type] == "administrator"
+      @submissions = @assignment.submissions
+      @students = @submission.course.students
+    end
+    if @students.present?
+      @students_with_ungraded_submissions = @students.with_ungraded_assignment(@assignment).where.not(:id => @submission.student_id)
+      if @students_with_ungraded_submissions.present?
+        @next_ungraded_submission = @students_with_ungraded_submissions.first.submissions.from_assignment(@assignment).pluck(:id)
+      end
+    end
   end
 
   def unsubmit
@@ -44,6 +66,13 @@ class SubmissionsController < ApplicationController
     render "show"
   end
   
+  def ungrade
+    @submission = Submission.find(params[:id])
+    @submission.update(:graded_at => nil)
+    flash.now[:success] = "Submission ungraded"
+    render "show"
+  end
+
   def edit
     @submission = Submission.find(params[:id])
   end
@@ -57,6 +86,18 @@ class SubmissionsController < ApplicationController
       flash.now[:danger] = @submission.errors.full_messages[0]
       render "edit"
     end
+  end
+
+  def download_student_document
+    @submission = Submission.find(params[:id])
+    data = open(@submission.student_document.url)
+    send_data data.read, filename: @submission.formatted_student_document_file_name, type: "application/pdf"
+  end
+
+  def download_grader_document
+    @submission = Submission.find(params[:id])
+    data = open(@submission.grader_document.url)
+    send_data data.read, filename: @submission.grader_document_file_name, type: "application/pdf"
   end
 
   private
@@ -101,7 +142,11 @@ class SubmissionsController < ApplicationController
       temp_file.close
       temp_file.unlink
     end
-  end    
+  end
+
+  # def set_s3_direct_post
+  #   @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
+  # end
 
   def submission_params
     params.require(:submission).permit(:description, :grade, :student_document, :grader_document, :feedback, :mark_submitted, :grade_by_role_id, :grade_by_role_type, :mark_graded)

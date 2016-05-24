@@ -1,8 +1,8 @@
 -if @context.present?
   %h3= @context
 %h4 Ungraded Submissions
+-if @submissions.ungraded.present?
+  =link_to("Download Ungraded Submission Documents", assignment_submissions_path(@assignment,:unsubmitted)+".zip", :class => "btn btn-primary")
 =render "submissions/table", :submissions => @submissions.ungraded
-%h4 Unsubmitted Submissions
-=render "submissions/table", :submissions => @submissions.unsubmitted
 %h4 Graded Submissions
 =render "submissions/table", :submissions => @submissions.graded

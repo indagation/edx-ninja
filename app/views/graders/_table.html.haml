@@ -14,10 +14,10 @@
           -graders.each do |grader|
             %tr
               %td= grader.username
-              %td= pluralize(grader.students.count, 'student')
-              %td= pluralize(grader.max_students, 'student')
-              %td= pluralize(grader.submissions.ungraded.count, 'submission')
-              %td= pluralize(grader.graded_submissions.count, 'submission')
+              %td= grader.students.count
+              %td= grader.max_students
+              %td= grader.submissions.ungraded.count
+              %td= grader.graded_submissions.count
               %td= link_to("View Grader Info", grader_path(grader), :class=>"btn btn-danger")        
 -else
   %p There are no graders

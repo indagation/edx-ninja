@@ -1,11 +1,11 @@
 =render "submissions/info_student"
--if session[:role_type] == "student" or true
+%p
+-if session[:role_type] == "student"
   =bootstrap_form_for @submission do |f|
     =f.text_field :description
     =f.file_field :student_document
-    =f.check_box :mark_submitted
+    =f.hidden_field :mark_submitted, :value => true
     =f.submit "Submit Assignment", class: "btn btn-primary"
-
 -elsif @submission.submitted
   =bootstrap_form_for @submission do |f|
     =f.text_field :grade
@@ -14,7 +14,7 @@
     =f.hidden_field :graded_by_role_id, :value => session[:role_id]    
     =f.hidden_field :graded_by_role_type, :value => session[:role_type]
     -if @submission.graded_at.blank?
-      =f.check_box :mark_graded
+      =f.hidden_field :mark_graded, :value => true
     =f.submit "Grade Assignment", class: "btn btn-primary"
 -else
   %h4 The assignment has yet to be submitted

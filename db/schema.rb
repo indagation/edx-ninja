@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160320023518) do
+ActiveRecord::Schema.define(version: 20160524130200) do
 
   create_table "administrators", force: :cascade do |t|
     t.integer "user_id"
@@ -22,8 +22,11 @@ ActiveRecord::Schema.define(version: 20160320023518) do
   add_index "administrators", ["user_id"], name: "index_administrators_on_user_id"
 
   create_table "assignments", force: :cascade do |t|
-    t.integer "course_id"
-    t.string  "resource_link_id"
+    t.integer  "course_id"
+    t.string   "resource_link_id"
+    t.text     "display_name"
+    t.datetime "due_date"
+    t.integer  "graceperiod"
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id"
@@ -44,14 +47,6 @@ ActiveRecord::Schema.define(version: 20160320023518) do
 
   add_index "graders", ["course_id"], name: "index_graders_on_course_id"
   add_index "graders", ["user_id"], name: "index_graders_on_user_id"
-
-  create_table "staffs", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "course_id"
-  end
-
-  add_index "staffs", ["course_id"], name: "index_staffs_on_course_id"
-  add_index "staffs", ["user_id"], name: "index_staffs_on_user_id"
 
   create_table "students", force: :cascade do |t|
     t.integer "user_id"

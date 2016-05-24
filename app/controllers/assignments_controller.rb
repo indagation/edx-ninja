@@ -18,6 +18,28 @@ class AssignmentsController < ApplicationController
         if @resource_link_id.present? and @course.present?
           @assignment = Assignment.find_or_create_by :resource_link_id => @resource_link_id, :course => @course
         end
+        if @assignment.present?
+          if params[:custom_component_due_date].present?
+            begin
+              @due_date = DateTime.parse(params[:custom_component_due_date])
+              if @due_date.present? and @assignment.due_date != @due_date
+                @assignment.update(due_date: @due_date)
+              end
+            end
+          end
+          if params[:custom_component_graceperiod]
+            @graceperiod = params[:custom_component_graceperiod].to_i
+            if @graceperiod.present? and @assignment.graceperiod != @graceperiod
+              @assignment.update(graceperiod: @graceperiod)
+            end
+          end
+          if params[:custom_component_display_name].present?    
+            @display_name = params[:custom_component_display_name]
+            if @display_name.present? and @assignment.display_name != @display_name
+              @assignment.update(display_name: @display_name)
+            end
+          end
+        end
       end
     elsif params[:id].present?
       @assignment = Assignment.find(params[:id])
@@ -30,14 +52,17 @@ class AssignmentsController < ApplicationController
         unless @submission.present?
           @submission = Submission.create :student => @student, :assignment => @assignment, :lti_params => params
         end
+        if @submission.lti_params.blank? and params
+          @submission.update :lti_params => params
+        end
         render "submissions/show"
       elsif session[:role_type] == "grader"
         @grader ||= Grader.find session[:role_id]
-        @context = "You are viewing submissions for the assignment: #{@assignment.resource_link_id}"
+        @context = "You are viewing submissions for the assignment: #{@assignment.description}"
         @submissions = @grader.submissions.from_assignment(@assignment)
         render "submissions/index"
       elsif session[:role_type] == "administrator"
-        @context = "You are viewing submissions for the assignment: #{@assignment.resource_link_id}"
+        @context = "You are viewing submissions for the assignment: #{@assignment.description}"
         @submissions = @assignment.submissions
         render "submissions/index"
       else

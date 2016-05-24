@@ -1,0 +1,22 @@
+{
+  "name": "edxNinja",
+  "version": "1.0.0",
+  "description": "Student submission and grading LTI",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/indagation/edx-ninja.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/indagation/edx-ninja/issues"
+  },
+  "homepage": "https://github.com/indagation/edx-ninja"
+}

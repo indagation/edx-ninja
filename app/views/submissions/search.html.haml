@@ -1,3 +1,4 @@
 -if @context.present?
   %h3= @context
+=link_to("Download Available Submission Documents", request.original_url+".zip", :class => "btn btn-primary")  
 =render "submissions/table", :submissions => @submissions

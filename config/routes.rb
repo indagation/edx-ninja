@@ -31,6 +31,10 @@ Rails.application.routes.draw do
 
   get 'submissions/assignments/:assignment_id/:status' => 'submissions#assignment', as: :assignment_submissions
   get 'submissions/:id/unsubmit' => 'submissions#unsubmit', as: :unsubmit_submission
+  get 'submissions/:id/ungrade' => 'submissions#ungrade', as: :ungrade_submission
+
+  get 'submissions/:id/download/student/document' => 'submissions#download_student_document', as: :download_student_document
+  get 'submissions/:id/download/grader/document' => 'submissions#download_grader_document', as: :download_grader_document
 
   get 'students/courses/:course_id/:status' => 'students#course', as: :course_students
   get 'graders/courses/:course_id/:status' => 'graders#course', as: :course_graders

@@ -7,11 +7,7 @@
   %p
     Current Grade:
     =number_to_percentage(@submission.grade*100, precision: 0)
-  -if @submission.grader_document.present?
-    %p
-      =link_to("View Grader Document", @submission.grader_document.url, target: "_blank", class: "btn btn-danger")
-  -else
-    %p No grader document uploaded        
+  =@submission.grader_document_button.html_safe
   -if @submission.feedback.present?
     %p
       Grader Feedback:

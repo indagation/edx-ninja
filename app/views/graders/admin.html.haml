@@ -1,22 +1,4 @@
-%h4 Grader Info
-.row
-  .col-md-10.col-md-offset-1
-    %table.table.table-striped
-      %thead
-        %tr
-          %th Graders
-          %th Accepting Students
-          %th Has Students
-          %th No Students
-          %th Ungraded Assignments
-      %tbody
-        %tr
-          %td= link_to(pluralize(@course.graders.count, 'grader'), course_graders_path(@course,:all))
-          %td= link_to(pluralize(@course.graders.accepting_students.count.count, 'grader'), course_graders_path(@course,:accepting_students))
-          %td= link_to(pluralize(@course.graders.with_students.count, 'grader'), course_graders_path(@course,:with_students))
-          %td= link_to(pluralize(@course.graders.without_students.count, 'grader'), course_graders_path(@course,:without_students))
-          %td= link_to(pluralize(@course.graders.with_ungraded_assignments.count, 'grader'), course_graders_path(@course,:with_ungraded_assignments))
-%hr
 %h4 Graders
 =render "graders/search", course: @course, username: params[:username]
 =render "graders/table", graders: @course.graders
+=render "graders/filters", course: @course

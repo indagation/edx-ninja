@@ -1,0 +1,11 @@
+%hr
+%h4 Filters
+.row
+  .col-md-10.col-md-offset-1
+    %table.table.table-striped
+      %thead
+        %tr
+          %th= link_to("All Students (#{@course.students.count})", course_students_path(@course,:all))
+          %th= link_to("No Grader (#{@course.students.no_grader.count})", course_students_path(@course,:no_grader))
+          %th= link_to("Has Grader (#{@course.students.has_grader.count})", course_students_path(@course,:has_grader))
+          %th= link_to("Ungraded Assignments (#{@course.students.with_ungraded_assignments.count})", course_students_path(@course,:with_ungraded_assignments))

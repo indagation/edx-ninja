@@ -1,22 +1,49 @@
-%h3= "Info for assignment #{@submission.assignment.resource_link_id}"
-%hr
-=render "submissions/info_student"
 -if ["student"].include? session[:role_type]
-  -if @submission.submitted_at.present?
-    %hr
-    %h4 Your assignment has been submitted.
-  -if true
-    %hr
-    %p= link_to("View Assignment", edit_submission_path(@submission), :class => 'btn btn-primary')
   -if @submission.graded_at.present?
-    %hr
-    %h4 Your assignment has been graded.    
-=render "submissions/info_grader"
-%hr
--if ["administrator", "grader"].include? session[:role_type]
-  -if @submission.submitted
-    %p= link_to("Grade Student Submission", edit_submission_path(@submission), :class => 'btn btn-primary')
-    %hr
-    %p=link_to("Mark as not submitted", unsubmit_submission_path(@submission), :class => 'btn btn-warning')
+    %h4 Your assignment has been graded.
+    =render "submissions/info_grader"
+  -elsif @submission.submitted_at.present?
+    %h4 Your assignment has been submitted, but it hasn't been graded yet.
+    / %hr
+    / =render "submissions/info_student"
+  -elsif @submission.past_due?
+    %h4 You missed the submission date for this assignment.
+    %p The due date for this assignment was #{@submission.due_date_string}
   -else
-    %h4 Submission hasn't been submitted.
+    =bootstrap_form_for @submission do |f|
+      =f.file_field :student_document, label: "Choose Document"
+      =f.text_field :description
+      =f.hidden_field :mark_submitted, :value => "1"
+      =f.submit "Submit Assignment", class: "btn btn-primary"
+-else
+  %h3= "Info for assignment: #{@submission.assignment.description}"
+  -if @submissions.ungraded.count > 1
+    %p= link_to(pluralize(@submissions.ungraded.count, 'Ungraded submission'), assignment_submissions_path(@submission.assignment,:ungraded), class: 'btn btn-primary')
+  -elsif @submissions.ungraded.count == 0
+    %p All submissions graded.
+  -if @next_ungraded_submission.present?
+    =link_to("Grade Next Submission", submission_path(@next_ungraded_submission), :class => 'btn btn-success')
+  %hr
+  =render "submissions/info_student"
+  -if @submission.graded_at.present?
+    =render "submissions/info_grader"
+    -if session[:role_type] == "administrator"
+      %hr
+      %p=link_to("Mark as not graded", ungrade_submission_path(@submission), :class => 'btn btn-warning')
+  -if @submission.submitted
+    %hr
+    %h3 Update Student Grade
+    =bootstrap_form_for @submission do |f|
+      =f.text_field :grade
+      =f.text_area :feedback
+      =f.file_field :grader_document
+      =f.hidden_field :graded_by_role_id, :value => session[:role_id]    
+      =f.hidden_field :graded_by_role_type, :value => session[:role_type]
+      =f.hidden_field :mark_graded, :value => "1"
+      =f.submit "Grade Assignment", class: "btn btn-primary"
+      -if session[:role_type] == "administrator"
+        %hr
+        %p=link_to("Mark as not submitted", unsubmit_submission_path(@submission), :class => 'btn btn-warning')
+  -else
+    %hr
+    %h4 The assignment has yet to be submitted
