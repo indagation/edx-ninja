@@ -83,16 +83,5 @@ Rails.application.configure do
     :s3_credentials => {
       :bucket => 'edx-ninja-paperclip'
     }
-  }
-
-  Rails.application.config.middleware.use ExceptionNotification::Rack,
-    :email => {
-      :email_prefix => "[EDX NINJA Site Error] ",
-      :sender_address => %{"Exception Notification" <indagation@gmail.com>},
-      :exception_recipients => %w{indagation@gmail.com}
-    }
-
-  config.action_mailer.delivery_method = :sendmail
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true    
+  }   
 end
