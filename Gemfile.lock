@@ -227,7 +227,6 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   devise
-  exception_notification
   font-awesome-rails (= 4.3.0.0)
   haml
   ims-lti
