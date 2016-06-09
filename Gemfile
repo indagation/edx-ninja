@@ -71,6 +71,7 @@ group :production do
   gem 'rails_12factor'
   # Use postgres as the database for Active Record
   gem 'pg'
+  gem 'exception_notification'
 end
 
 ruby "2.2.2"
